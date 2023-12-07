@@ -1,0 +1,48 @@
+{
+  "name": "g2-render",
+  "version": "0.0.6",
+  "description": "一个基于@antv/g2的chart webComponent组件,可直接用于vue,react,原生js等项目;区别于其他的组件, g2-render使用json配置,有几个好处:1. 你可以拷贝g2的demo立即使用,2.渲染逻辑在父组件控制,当有差别很大的新图表需求时,也不用改动原组件,3.支持json系列化,对于低代码项目友好; ",
+  "packageManager": "pnpm@7.11.0",
+  "scripts": {
+    "start": "vite",
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "homepage": "https://github.com/Valar103769/g2-render",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Valar103769/g2-render.git"
+  },
+  "keywords": [
+    "charts",
+    "echarts",
+    "g2",
+    "antv",
+    "highCharts",
+    "bizCharts"
+  ],
+  "license": "MIT",
+  "main": "dist/g2-render.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/g2-render.es.js",
+      "require": "./dist/g2-render.umd.js"
+    }
+  },
+  "devDependencies": {
+    "@antv/data-set": "^0.11.8",
+    "@antv/g2": ">=4",
+    "@types/node": "^18.11.15",
+    "typescript": "^4.9.4",
+    "vite": "^3.0.9",
+    "vite-plugin-solid": "^2.5.0"
+  },
+  "dependencies": {
+    "solid-element": "^1.6.3",
+    "solid-js": "^1.6.5"
+  },
+  "peerDependencies": {
+    "@antv/g2": ">=4"
+  }
+}

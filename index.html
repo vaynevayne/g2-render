@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="shortcut icon" type="image/ico" href="/src/assets/favicon.ico" />
+    <title>Solid App</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <script src="/src/index.ts" type="module"></script>
+    <script src="https://unpkg.com/@antv/data-set"></script>
+
+    <div id="app">
+      <h3>{{ message }}</h3>
+      <button @click="data = data.slice(0,10)">add more</button>
+      <br />
+      {{arr}} {{json}}
+
+      <hr />
+      <!-- pass arr explicitly as prop
+           spread the passed value, so any mutation of arr
+           is a new prop set, which can be detected by the solid component. 
+           
+          -->
+      <div style="height: 300px">
+        <g2-render
+          v-if="data.length"
+          :json="json"
+          :arr.prop="[...arr]"
+          :data.prop="data"
+          :scope.prop="scope"
+          :init-config.prop="initConfig"
+        ></g2-render>
+      </div>
+    </div>
+
+    <script>
+      const render = ({ DataSet, chart, x, y, data }) => {
+        const ds = new DataSet();
+        chart.scale({
+          [x]: {
+            sync: true,
+            nice: true,
+          },
+          [y]: {
+            sync: true,
+            nice: true,
+          },
+        });
+        const dv1 = ds.createView().source(data);
+        dv1.transform({
+          type: "map",
+          callback: (row) => {
+            row[y] = parseFloat(row[y]);
+
+            return row;
+          },
+        });
+        const view1 = chart.createView();
+        view1.data(dv1.rows);
+        view1.axis(x, {
+          subTickLine: {
+            count: 3,
+            length: 3,
+          },
+          tickLine: {
+            length: 6,
+          },
+        });
+        view1.axis(y, {
+          label: {
+            formatter: (text) => {
+              return text.replace(/(\d)(?=(?:\d{3})+$)/g, "$1,");
+            },
+          },
+        });
+        view1.line().position(`${x}*${y}`);
+
+        chart.render();
+      };
+      // dynamic import, bypass stackblitz limitation with external resources.
+      (async function main() {
+        const { createApp } = await import(
+          "https://esm.sh/vue@3.2.45/dist/vue.esm-browser.prod"
+        );
+        let app = createApp({
+          data() {
+            return {
+              arr: [1, 2, 3, 4, 5],
+              message: "Hello Vue!",
+              json: parser.stringify({
+                render,
+              }),
+              data: data,
+              scope: {
+                x: "x",
+                y: "y",
+                DataSet: DataSet,
+              },
+              initConfig: {
+                autoFit: true,
+                height: 300,
+              },
+            };
+          },
+        });
+        app.mount("#app");
+      })();
+
+      var data = [
+        {
+          x: 2016,
+          "Number of incidents": "13,488",
+          y: "34,676",
+          Injuries: "39,851",
+        },
+        {
+          x: 2015,
+          "Number of incidents": "14,852",
+          y: "38,464",
+          Injuries: "43,960",
+        },
+        {
+          x: 2014,
+          "Number of incidents": "16,860",
+          y: "43,566",
+          Injuries: "41,061",
+        },
+        {
+          x: 2013,
+          "Number of incidents": "11,996",
+          y: "22,234",
+          Injuries: "37,666",
+        },
+        {
+          x: 2012,
+          "Number of incidents": "8,500",
+          y: "15,436",
+          Injuries: "25,486",
+        },
+        {
+          x: 2011,
+          "Number of incidents": "5,071",
+          y: "8,228",
+          Injuries: "14,652",
+        },
+        {
+          x: 2010,
+          "Number of incidents": "4,822",
+          y: "7,727",
+          Injuries: "15,860",
+        },
+        {
+          x: 2009,
+          "Number of incidents": "4,719",
+          y: "9,271",
+          Injuries: "19,128",
+        },
+        {
+          x: 2008,
+          "Number of incidents": "4,803",
+          y: "9,135",
+          Injuries: "18,984",
+        },
+        {
+          x: 2007,
+          "Number of incidents": "3,241",
+          y: "12,858",
+          Injuries: "22,453",
+        },
+        {
+          x: 2006,
+          "Number of incidents": "2,749",
+          y: "9,362",
+          Injuries: "15,551",
+        },
+        {
+          x: 2005,
+          "Number of incidents": "2,009",
+          y: "6,313",
+          Injuries: "12,769",
+        },
+        {
+          x: 2004,
+          "Number of incidents": "1,162",
+          y: "5,718",
+          Injuries: "11,817",
+        },
+        {
+          x: 2003,
+          "Number of incidents": "1,262",
+          y: "3,278",
+          Injuries: "7,091",
+        },
+        {
+          x: 2002,
+          "Number of incidents": "1,332",
+          y: "4,799",
+          Injuries: "7,103",
+        },
+        {
+          x: 2001,
+          "Number of incidents": "1,907",
+          y: "7,743",
+          Injuries: "21,151",
+        },
+        {
+          x: 2000,
+          "Number of incidents": "1,813",
+          y: "4,402",
+          Injuries: "5,869",
+        },
+        {
+          x: 1999,
+          "Number of incidents": "1,395",
+          y: "3,388",
+          Injuries: "5,341",
+        },
+        {
+          x: 1998,
+          "Number of incidents": 933,
+          y: "4,688",
+          Injuries: "8,183",
+        },
+        {
+          x: 1997,
+          "Number of incidents": "3,200",
+          y: "10,928",
+          Injuries: "9,174",
+        },
+        {
+          x: 1996,
+          "Number of incidents": "3,056",
+          y: "6,965",
+          Injuries: "10,781",
+        },
+        {
+          x: 1995,
+          "Number of incidents": "3,081",
+          y: "6,094",
+          Injuries: "14,288",
+        },
+        {
+          x: 1994,
+          "Number of incidents": "3,458",
+          y: "7,691",
+          Injuries: "7,573",
+        },
+        {
+          x: 1993,
+          "Number of incidents": 747,
+          y: "2,669",
+          Injuries: "5,600",
+        },
+        {
+          x: 1992,
+          "Number of incidents": "5,073",
+          y: "9,745",
+          Injuries: "9,927",
+        },
+        {
+          x: 1991,
+          "Number of incidents": "4,683",
+          y: "8,429",
+          Injuries: "7,591",
+        },
+        {
+          x: 1990,
+          "Number of incidents": "3,887",
+          y: "7,148",
+          Injuries: "6,128",
+        },
+        {
+          x: 1989,
+          "Number of incidents": "4,323",
+          y: "8,136",
+          Injuries: "5,512",
+        },
+        {
+          x: 1988,
+          "Number of incidents": "3,720",
+          y: "7,189",
+          Injuries: "6,860",
+        },
+        {
+          x: 1987,
+          "Number of incidents": "3,184",
+          y: "6,476",
+          Injuries: "5,769",
+        },
+        {
+          x: 1986,
+          "Number of incidents": "2,860",
+          y: "4,976",
+          Injuries: "5,814",
+        },
+        {
+          x: 1985,
+          "Number of incidents": "2,915",
+          y: "7,094",
+          Injuries: "5,130",
+        },
+        {
+          x: 1984,
+          "Number of incidents": "3,495",
+          y: "10,450",
+          Injuries: "5,291",
+        },
+        {
+          x: 1983,
+          "Number of incidents": "2,870",
+          y: "9,444",
+          Injuries: "4,047",
+        },
+        {
+          x: 1982,
+          "Number of incidents": "2,545",
+          y: "5,135",
+          Injuries: "3,342",
+        },
+        {
+          x: 1981,
+          "Number of incidents": "2,585",
+          y: "4,851",
+          Injuries: "3,337",
+        },
+        {
+          x: 1980,
+          "Number of incidents": "2,662",
+          y: "4,391",
+          Injuries: "3,645",
+        },
+        {
+          x: 1979,
+          "Number of incidents": "2,661",
+          y: "2,100",
+          Injuries: "2,502",
+        },
+        {
+          x: 1978,
+          "Number of incidents": "1,526",
+          y: "1,459",
+          Injuries: "1,600",
+        },
+        {
+          x: 1977,
+          "Number of incidents": "1,319",
+          y: 456,
+          Injuries: 518,
+        },
+        {
+          x: 1976,
+          "Number of incidents": 923,
+          y: 672,
+          Injuries: 755,
+        },
+        {
+          x: 1975,
+          "Number of incidents": 740,
+          y: 617,
+          Injuries: 617,
+        },
+        {
+          x: 1974,
+          "Number of incidents": 580,
+          y: 542,
+          Injuries: 763,
+        },
+        {
+          x: 1973,
+          "Number of incidents": 473,
+          y: 370,
+          Injuries: 495,
+        },
+        {
+          x: 1972,
+          "Number of incidents": 496,
+          y: 566,
+          Injuries: 408,
+        },
+        {
+          x: 1971,
+          "Number of incidents": 470,
+          y: 173,
+          Injuries: 82,
+        },
+        {
+          x: 1970,
+          "Number of incidents": 651,
+          y: 171,
+          Injuries: 192,
+        },
+      ];
+      var parser = {
+        FUNC_PREFIX: "__xfunc__",
+        REG_PREFIX: "__xreg__",
+        isArrOrObj: function (obj) {
+          return this.isArr(obj) || this.isObj(obj);
+        },
+        isArr: function (obj) {
+          return (
+            !!obj && Object.prototype.toString.call(obj) === "[object Array]"
+          );
+        },
+        isObj: function (obj) {
+          return (
+            !!obj && Object.prototype.toString.call(obj) === "[object Object]"
+          );
+        },
+        isRegExp: function (obj) {
+          return (
+            !!obj && Object.prototype.toString.call(obj) === "[object RegExp]"
+          );
+        },
+        isFunc: function (obj) {
+          return typeof obj === "function";
+        },
+        funcParse: function (obj) {
+          let result;
+
+          if (this.isArr(obj)) {
+            result = [];
+            result = obj.map((v) => {
+              /** 如果是函数类型, 则转换为字符串 */
+              if (this.isFunc(v)) {
+                return `${this.FUNC_PREFIX}${v}`;
+              }
+              /** 如果类型为正则 */
+              if (this.isRegExp(v)) {
+                return `${this.REG_PREFIX}${v}`;
+              }
+              /** 如果是数组或者对象 */
+              if (this.isArrOrObj(v)) {
+                return this.funcParse(v);
+              }
+              /** 基本类型 */
+              return v;
+            });
+          }
+
+          if (this.isObj(obj)) {
+            result = {};
+            for (let key in obj) {
+              const v = obj[key];
+              if (this.isFunc(v)) {
+                result[key] = `${this.FUNC_PREFIX}${v}`;
+              } else if (this.isRegExp(v)) {
+                /** 如果类型为正则 */
+                result[key] = `${this.REG_PREFIX}${v}`;
+              } else if (this.isArrOrObj(v)) {
+                result[key] = this.funcParse(v);
+              } else result[key] = v;
+            }
+          }
+
+          return result;
+        },
+        parse: function (jsonStr, error) {
+          try {
+            return JSON.parse(jsonStr, (key, value) => {
+              if (value && typeof value === "string") {
+                const _value =
+                  value.indexOf(this.FUNC_PREFIX) > -1
+                    ? new Function(
+                        `return ${value.replace(this.FUNC_PREFIX, "")}`
+                      )()
+                    : value.indexOf(this.REG_PREFIX) > -1
+                    ? new Function(
+                        `return ${value.replace(this.REG_PREFIX, "")}`
+                      )()
+                    : value;
+                return _value;
+              }
+              return value;
+            });
+          } catch (err) {
+            error && error(err);
+          }
+        },
+        stringify: function (obj, replacer, space, error) {
+          try {
+            let _obj = obj;
+            if (this.isRegExp(obj)) {
+              /** 如果类型为正则 */
+              _obj = `${this.REG_PREFIX}${obj}`;
+            }
+            if (this.isFunc(obj)) {
+              _obj = `${this.FUNC_PREFIX}${obj}`;
+            }
+            if (this.isArrOrObj(obj)) {
+              _obj = this.funcParse(obj);
+            }
+            return JSON.stringify(_obj, replacer, space);
+          } catch (err) {
+            error && error(err);
+            return "";
+          }
+        },
+        fastStringify: function (obj, space, error) {
+          try {
+            return JSON.stringify(
+              obj,
+              (k, v) => {
+                /** 如果类型为函数 */
+                if (this.isFunc(v)) {
+                  return `${this.FUNC_PREFIX}${v}`;
+                }
+                /** 如果类型为正则 */
+                if (this.isRegExp(v)) {
+                  return `${this.REG_PREFIX}${v}`;
+                }
+                return v;
+              },
+              space
+            );
+          } catch (err) {
+            error && error(err);
+            return "";
+          }
+        },
+        nativeStringify: JSON.stringify,
+        nativeParse: JSON.parse,
+      };
+    </script>
+  </body>
+</html>
